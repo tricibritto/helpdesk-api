@@ -12,7 +12,7 @@ Desenvolver uma API REST para facilitar o gerenciamento de chamados de suporte, 
 
 A HelpDesk API é uma aplicação desenvolvida para o gerenciamento de chamados de suporte. O sistema permite organizar informações relacionadas aos chamados, como título, descrição, setor solicitante, prioridade e status.
 
-A aplicação utiliza uma API REST para realizar operações de gerenciamento dos chamados e possui integração com um banco de dados MySQL.
+A aplicação utiliza uma API REST desenvolvida com Node.js e Express, integrada ao banco de dados MySQL para armazenamento e gerenciamento das informações.
 
 ## Tecnologias utilizadas
 
@@ -21,6 +21,7 @@ A aplicação utiliza uma API REST para realizar operações de gerenciamento do
 * JavaScript
 * MySQL
 * MySQL2
+* CORS
 * Git
 * GitHub
 
@@ -28,21 +29,42 @@ A aplicação utiliza uma API REST para realizar operações de gerenciamento do
 
 ```text
 helpdesk-api/
+├── controllers/
+│   └── chamadoController.js
+├── database/
+│   └── db.js
+├── routes/
+│   └── chamadoRoutes.js
 ├── .gitignore
 ├── package.json
 ├── package-lock.json
-├── index.js
-└── demais arquivos da aplicação
+├── README.md
+└── server.js
 ```
 
-> A estrutura deverá ser atualizada de acordo com os arquivos e pastas existentes no projeto.
+### Descrição das principais pastas e arquivos
+
+**controllers/**
+Contém a lógica responsável pelas operações realizadas nos chamados.
+
+**database/**
+Contém a configuração da conexão da aplicação com o banco de dados MySQL.
+
+**routes/**
+Contém as rotas responsáveis por disponibilizar os endpoints da API.
+
+**server.js**
+Arquivo principal responsável pela inicialização do servidor e configuração da aplicação.
+
+**package.json**
+Contém as informações do projeto, scripts e dependências utilizadas.
 
 ## Como instalar o projeto
 
 ### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/tricibritto/helpdesk-api
+git clone https://github.com/tricibritto/helpdesk-api.git
 ```
 
 ### 2. Entrar na pasta do projeto
@@ -59,75 +81,144 @@ npm install
 
 ## Como executar a API
 
-Para iniciar a aplicação, execute:
+Após instalar as dependências, execute:
 
 ```bash
 npm start
 ```
 
-A API será executada na porta configurada no projeto.
+A aplicação será iniciada utilizando o arquivo `server.js`.
+
+Por padrão, a API será executada em:
+
+```text
+http://localhost:3000
+```
+
+Para verificar se a API está funcionando, acesse:
+
+```text
+http://localhost:3000
+```
 
 ## Endpoints disponíveis
+
+### Verificar funcionamento da API
+
+```http
+GET /
+```
+
+Retorna uma mensagem informando que a API está funcionando.
 
 ### Listar chamados
 
 ```http
-GET /ROTA
+GET /api/chamados
 ```
 
-Retorna os chamados cadastrados.
+Retorna todos os chamados cadastrados no banco de dados.
 
-### Consultar chamado
+### Buscar chamado por ID
 
 ```http
-GET /ROTA/:id
+GET /api/chamados/:id
 ```
 
-Retorna um chamado específico.
+Retorna um chamado específico de acordo com o ID informado.
+
+Exemplo:
+
+```text
+GET /api/chamados/1
+```
 
 ### Cadastrar chamado
 
 ```http
-POST /ROTA
+POST /api/chamados
 ```
 
-Cadastra um novo chamado.
+Permite cadastrar um novo chamado.
+
+Exemplo de requisição:
+
+```json
+{
+  "titulo": "Problema no computador",
+  "descricao": "Computador não está iniciando corretamente.",
+  "setor_solicitante": "Administrativo",
+  "prioridade": "Alta",
+  "status": "Aberto"
+}
+```
 
 ### Atualizar chamado
 
 ```http
-PUT /ROTA/:id
+PUT /api/chamados/:id
 ```
 
-Atualiza um chamado existente.
+Permite atualizar os dados de um chamado existente.
+
+Exemplo:
+
+```text
+PUT /api/chamados/1
+```
 
 ### Excluir chamado
 
 ```http
-DELETE /ROTA/:id
+DELETE /api/chamados/:id
 ```
 
-Exclui um chamado existente.
+Permite excluir um chamado existente de acordo com o ID informado.
 
-> As rotas acima deverão ser substituídas pelas rotas exatamente utilizadas no código da aplicação.
+Exemplo:
+
+```text
+DELETE /api/chamados/1
+```
+
+## Dados dos chamados
+
+Os chamados possuem as seguintes informações:
+
+| Campo               | Descrição                            |
+| ------------------- | ------------------------------------ |
+| `id`                | Identificador único do chamado       |
+| `titulo`            | Título do chamado                    |
+| `descricao`         | Descrição do problema ou solicitação |
+| `setor_solicitante` | Setor responsável pela solicitação   |
+| `prioridade`        | Prioridade do chamado                |
+| `status`            | Status atual do chamado              |
 
 ## Banco de dados
 
-A aplicação utiliza o banco de dados MySQL para armazenar os chamados.
+A aplicação utiliza o **MySQL** para armazenamento dos chamados.
 
-A tabela utilizada possui informações relacionadas aos chamados, incluindo:
+A conexão com o banco de dados é realizada pela aplicação por meio do arquivo:
 
-* ID
-* Título
-* Descrição
-* Setor solicitante
-* Prioridade
-* Status
+```text
+database/db.js
+```
+
+A tabela utilizada para armazenar os chamados contém os campos:
+
+```text
+id
+titulo
+descricao
+setor_solicitante
+prioridade
+status
+```
 
 ## Integrantes da equipe
 
-* Trícia Britto
-* Winie de Jesus
+* **Trícia Britto**
+* **Winie de Jesus**
 
 ## Instituição de ensino
 
